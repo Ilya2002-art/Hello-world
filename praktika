@@ -1,1 +1,77 @@
+from random import randint 
 
+def is_prime(k):
+    if k == 2:
+        return True
+    if k % 2 == 0:
+        return False
+    for i in range(3, int(k**0.5)+1, 2):
+        if k % i == 0:
+            return False
+    return True
+
+def max_extended(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, x, y = max_extended(b % a, a)
+        x = y - (b // a) * x
+        y = x
+        return g, x, y
+
+
+def find_consts():
+    primary = False
+    while not primary:
+        rand = randint(20, 200)
+        primary = is_prime(rand)
+        if primary:
+            return rand
+
+def choose_rand_e():
+    e = [] # массив всех чисел е
+    for i in range(20, 500):
+        gcd, x, y = max_extended(i, fi)
+        if is_prime(i) and gcd == 1:
+            e.append(i)
+    return e[randint(0, len(e) - 1)]
+
+def find_close_key(e, fi):
+    d = 1
+    is_found = False
+    while is_found == False:
+        if (d*e)%fi == 1:
+            is_found = True
+        else:
+            d += 1
+            continue
+    if is_found:
+        return d
+    
+p, q = find_consts(), find_consts()
+n = p*q
+fi = (p-1)*(q-1)
+e = choose_rand_e()
+d = find_close_key(e, fi)
+
+
+
+def rsa_encrypt(plain_text, e, n):
+    cipher_text = [ord(x)**e % n for x in plain_text]        
+    return cipher_text
+
+def rsa_decrypt(cipher_text, d, n):
+    decoded_text = ''.join([chr((x**d) % n) for x in cipher_text])
+    return decoded_text 
+
+
+
+
+print('Введите сообщение:')
+plain_text = input()
+
+cipher_text = rsa_encrypt(plain_text, e, n)
+print("Шифрованый текст:", cipher_text)
+
+decoded_text = rsa_decrypt(cipher_text, d, n)
+print("Дешифрованый текст:", decoded_text) 
